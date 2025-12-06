@@ -1,0 +1,15 @@
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\bin\Debug\net9.0\SalleSport.exe
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\bin\Debug\net9.0\SalleSport.deps.json
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\bin\Debug\net9.0\SalleSport.runtimeconfig.json
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\bin\Debug\net9.0\SalleSport.dll
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\bin\Debug\net9.0\SalleSport.pdb
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\SalleSport.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\SalleSport.AssemblyInfoInputs.cache
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\SalleSport.AssemblyInfo.cs
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\SalleSport.csproj.CoreCompileInputs.cache
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\SalleSport.sourcelink.json
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\SalleSport.dll
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\refint\SalleSport.dll
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\SalleSport.pdb
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\SalleSport.genruntimeconfig.cache
+C:\Users\enzod\OneDrive\Bureau\Dev\Conception BDD\Projet\Conception-BDD\Sallesport\obj\Debug\net9.0\ref\SalleSport.dll
