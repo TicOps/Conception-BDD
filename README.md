@@ -9,3 +9,5 @@ git push
 pour récupérer -> git pull
 
 git status -> permet de vérifier si les fichiers ont bien été ajoutés
+
+apagnan
