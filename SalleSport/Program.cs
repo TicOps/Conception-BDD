@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Main;
 
 class Program
 {

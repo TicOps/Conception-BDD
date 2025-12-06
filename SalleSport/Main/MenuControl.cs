@@ -1,255 +1,270 @@
-using Microsoft.VisualBasic;
+using System;
+using System.Threading;
+using Models;
 
-public class MenuControl
+namespace Main
 {
-
-    //Fonction start pour lancer l'appel du programme
-    public void Start()
+    public class MenuControl
     {
-        ShowMainMenu();
-    }
+        // ===== POINT D'ENTRÉE =====
+        public void Start()
+        {
+            ShowMainMenu();
+        }
 
-    // Fonction ShowMainMenu pour pouvoir afficher le menu principal
-    private void ShowMainMenu()
-    {
-        while(true)
+        // ===== HEADER GLOBAL =====
+        private void DrawHeader(string title)
         {
             Console.Clear();
-            Console.WriteLine("===== Salle de Sport =====");
-            Console.WriteLine("1. Connexion");
-            Console.WriteLine("2. Mode évaluation");
-            Console.WriteLine("3. Quitter");
-            Console.Write("Votre choix : ");
 
-            var choix = Console.ReadLine();
+            // Logo ASCII simple
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("╔══════════════════════════════╗");
+            Console.WriteLine("║        SALLE DE SPORT        ║");
+            Console.WriteLine("╚══════════════════════════════╝");
+            Console.ResetColor();
+            Console.WriteLine();
 
-            switch(choix)
-            {
-                case "1":
-                    Login();
-                    break;
-                case "2":
-                    ShowEvaluationMenu();
-                    break;
-                case "3":
-                    return;
-                default:
-                    Console.WriteLine("Choix invalide, appuyez sur une touche...");
-                    Console.ReadKey();
-                    break;
-            }
-        }
-    }
-
-// ---------------------------------------------------------------------------------//
-    // Passage au menu de connexion
-    private void Login()
-    {
-        Console.Clear();
-        Console.WriteLine("=== Connexion ===");
-
-        Console.WriteLine("Nom d'utilisateur :");
-        var username = Console.ReadLine();
-
-        Console.WriteLine("Mot de passe :");
-        var password = Console.ReadLine();
-
-        var user = CanLogIn(username, password);
-
-        if (user == null)
-        {
-            Console.WriteLine("Identifiants incorrects.");
-            Console.ReadKey();
-            return;
+            // Titre du menu
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"► {title}");
+            Console.ResetColor();
+            Console.WriteLine("--------------------------------------------");
         }
 
-        Console.WriteLine($"==== Bienvenue {user.Username} ====");
-        Console.ReadKey();
-
-        // Redirection selon le rôle
-        if (user.Role == "ADMIN")
-            ShowAdminMenu(user);
-        else if (user.Role == "MEMBER")
-            ShowMemberMenu(user);
-    }
-
-
-    private User CanLogIn(string username, string password)
-    {
-        // ---- Fake users for testing ----
-        if (username == "admin" && password == "admin")
-            return new User { Username = username, Role = "ADMIN" };
-
-        if (username == "member" && password == "1234")
-            return new User { Username = username, Role = "MEMBER" };
-
-        return null;
-    }
-
-
-// ---------------------------------------------------------------------------------//
-
-    // Passage au menu d'évaluation
-    private void ShowEvaluationMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("=== Mode Évaluation ===");
-            Console.WriteLine("1. Rapports généraux");
-            Console.WriteLine("2. Coachs les plus suivis");
-            Console.WriteLine("3. Occupation des cours");
-            Console.WriteLine("4. Retour");
-            Console.Write("Votre choix : ");
-
-            var choix = Console.ReadLine();
-            switch (choix)
-            {
-                case "1":
-                case "2":
-                case "3":
-                    Console.WriteLine("(Rapport non implémenté)");
-                    Console.ReadKey();
-                    break;
-                case "4":
-                    return;
-                default:
-                    Console.WriteLine("Choix invalide.");
-                    Console.ReadKey();
-                    break;
-            }
-        }
-
-// ---------------------------------------------------------------------------------//
-// Affichage du menu admin
-
-    private void ShowAdminMenu(User user)
+        // ===== MENU PRINCIPAL =====
+        private void ShowMainMenu()
         {
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("=== Menu Administrateur ===");
-                Console.WriteLine($"Connecté : {user.Username}");
-                Console.WriteLine("1. Gérer les membres");
-                Console.WriteLine("2. Gérer les coachs");
-                Console.WriteLine("3. Gérer les cours");
-                Console.WriteLine("4. Statistiques / Rapports");
-                Console.WriteLine("5. Retour");
+                DrawHeader("Menu Principal");
+
+                Console.WriteLine("[1] Connexion");
+                Console.WriteLine("[2] Mode Évaluation");
+                Console.WriteLine("[3] Quitter");
+                Console.WriteLine("--------------------------------------------");
                 Console.Write("Votre choix : ");
 
                 var choix = Console.ReadLine();
+
                 switch (choix)
                 {
                     case "1":
-                        ManageMembers();
+                        Login();
                         break;
                     case "2":
-                        ManageCoachs();
+                        ShowEvaluationMenu();
                         break;
                     case "3":
-                        ManageCourses();
-                        break;
-                    case "4":
-                        ShowAdminStats();
-                        break;
-                    case "5":
-                        return; // retour au menu précédent
+                        Goodbye();
+                        return;
                     default:
-                        Console.WriteLine("Choix invalide.");
-                        Console.ReadKey();
+                        Error("Choix invalide !");
                         break;
                 }
             }
         }
 
-        // ----- sous-menus d'administration (placeholders) -----
-        private void ManageMembers()
+        // ===== SIMULATION LOGIN =====
+        private void Login()
         {
-            Console.Clear();
-            Console.WriteLine("=== Gérer les membres ===");
-            Console.WriteLine("1. Ajouter un membre (non implémenté)");
-            Console.WriteLine("2. Valider une inscription (non implémenté)");
-            Console.WriteLine("3. Supprimer une adhésion (non implémenté)");
-            Console.WriteLine("4. Retour");
-            Console.ReadKey();
+            DrawHeader("Connexion");
+
+            Console.Write("Nom d'utilisateur : ");
+            var username = Console.ReadLine();
+
+            Console.Write("Mot de passe : ");
+            var password = Console.ReadLine();
+
+            Loading("Connexion");
+
+            var user = CanLogIn(username, password);
+
+            if (user == null)
+            {
+                Error("Identifiants incorrects !");
+                return;
+            }
+
+            Success($"Bienvenue {user.Username} ({user.Role})");
+
+            if (user.Role == "ADMIN")
+                ShowAdminMenu(user);
+            else
+                ShowMemberMenu(user);
         }
 
-        private void ManageCoachs()
+        private User CanLogIn(string username, string password)
         {
-            Console.Clear();
-            Console.WriteLine("=== Gérer les coachs ===");
-            Console.WriteLine("1. Ajouter un coach (non implémenté)");
-            Console.WriteLine("2. Modifier un coach (non implémenté)");
-            Console.WriteLine("3. Supprimer un coach (non implémenté)");
-            Console.WriteLine("4. Retour");
-            Console.ReadKey();
+            if (username == "admin" && password == "admin")
+                return new User { Username = username, Role = "ADMIN" };
+
+            if (username == "member" && password == "1234")
+                return new User { Username = username, Role = "MEMBER" };
+
+            return null;
         }
 
-        private void ManageCourses()
-        {
-            Console.Clear();
-            Console.WriteLine("=== Gérer les cours ===");
-            Console.WriteLine("1. Ajouter un cours (non implémenté)");
-            Console.WriteLine("2. Modifier un cours (non implémenté)");
-            Console.WriteLine("3. Annuler un cours (non implémenté)");
-            Console.WriteLine("4. Retour");
-            Console.ReadKey();
-        }
-
-        private void ShowAdminStats()
-        {
-            Console.Clear();
-            Console.WriteLine("=== Statistiques administrateur ===");
-            Console.WriteLine("(Non implémenté)");
-            Console.ReadKey();
-        }
-
-// ------------------------------------------------------------------------------------------------------------------
-    
-// Affichage du menu membre
-    private void ShowMemberMenu(User user)
+        // ===== MENU ADMIN =====
+        private void ShowAdminMenu(User user)
         {
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("=== Menu Membre ===");
-                Console.WriteLine($"Connecté : {user.Username}");
-                Console.WriteLine("1. Réserver un cours");
-                Console.WriteLine("2. Annuler une réservation");
-                Console.WriteLine("3. Voir mon historique");
-                Console.WriteLine("4. Modifier mes informations");
-                Console.WriteLine("5. Retour");
+                DrawHeader($"Espace Administrateur : {user.Username}");
+
+                Console.WriteLine("[1] Gérer les membres");
+                Console.WriteLine("[2] Gérer les coachs");
+                Console.WriteLine("[3] Gérer les cours");
+                Console.WriteLine("[4] Statistiques");
+                Console.WriteLine("[5] Retour");
+                Console.WriteLine("--------------------------------------------");
                 Console.Write("Votre choix : ");
 
                 var choix = Console.ReadLine();
+
                 switch (choix)
                 {
                     case "1":
-                        Console.WriteLine("(Réservation non implémentée)");
-                        Console.ReadKey();
+                        Placeholder("Gestion membres");
                         break;
                     case "2":
-                        Console.WriteLine("(Annulation non implémentée)");
-                        Console.ReadKey();
+                        Placeholder("Gestion coachs");
                         break;
                     case "3":
-                        Console.WriteLine("(Historique non implémenté)");
-                        Console.ReadKey();
+                        Placeholder("Gestion cours");
                         break;
                     case "4":
-                        Console.WriteLine("(Modification non implémentée)");
-                        Console.ReadKey();
+                        Placeholder("Statistiques");
                         break;
                     case "5":
                         return;
                     default:
-                        Console.WriteLine("Choix invalide.");
-                        Console.ReadKey();
+                        Error("Choix invalide !");
                         break;
                 }
             }
         }
 
+        // ===== MENU MEMBRE =====
+        private void ShowMemberMenu(User user)
+        {
+            while (true)
+            {
+                DrawHeader($"Espace Membre : {user.Username}");
 
+                Console.WriteLine("[1] Réserver un cours");
+                Console.WriteLine("[2] Annuler une réservation");
+                Console.WriteLine("[3] Voir mon historique");
+                Console.WriteLine("[4] Modifier mes informations");
+                Console.WriteLine("[5] Retour");
+                Console.WriteLine("--------------------------------------------");
+                Console.Write("Votre choix : ");
+
+                var choix = Console.ReadLine();
+
+                switch (choix)
+                {
+                    case "1":
+                        Placeholder("Réservations");
+                        break;
+                    case "2":
+                        Placeholder("Annulation");
+                        break;
+                    case "3":
+                        Placeholder("Historique");
+                        break;
+                    case "4":
+                        Placeholder("Modification infos");
+                        break;
+                    case "5":
+                        return;
+                    default:
+                        Error("Choix invalide !");
+                        break;
+                }
+            }
+        }
+
+        // ===== MODE EVALUATION =====
+        private void ShowEvaluationMenu()
+        {
+            while (true)
+            {
+                DrawHeader("Mode Évaluation");
+
+                Console.WriteLine("[1] Rapports généraux");
+                Console.WriteLine("[2] Coachs les plus suivis");
+                Console.WriteLine("[3] Occupation des cours");
+                Console.WriteLine("[4] Retour");
+                Console.WriteLine("--------------------------------------------");
+                Console.Write("Votre choix : ");
+
+                var choix = Console.ReadLine();
+
+                switch (choix)
+                {
+                    case "1":
+                    case "2":
+                    case "3":
+                        Placeholder("Rapports");
+                        break;
+                    case "4":
+                        return;
+                    default:
+                        Error("Choix invalide !");
+                        break;
+                }
+            }
+        }
+
+        // ===== UTILITAIRES VISUELS =====
+        private void Placeholder(string title)
+        {
+            DrawHeader(title);
+            Console.WriteLine("(Cette fonctionnalité n'est pas encore implémentée)");
+            Pause();
+        }
+
+        private void Error(string msg)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(msg);
+            Console.ResetColor();
+            Pause();
+        }
+
+        private void Success(string msg)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(msg);
+            Console.ResetColor();
+            Pause();
+        }
+
+        private void Loading(string msg)
+        {
+            Console.Write($"{msg}");
+            for (int i = 0; i < 3; i++)
+            {
+                Thread.Sleep(250);
+                Console.Write(".");
+            }
+            Console.WriteLine();
+        }
+
+        private void Pause()
+        {
+            Console.WriteLine();
+            Console.Write("Appuyez sur une touche...");
+            Console.ReadKey();
+        }
+
+        private void Goodbye()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Fermeture de l'application...");
+            Console.ResetColor();
+            Thread.Sleep(500);
+        }
+    }
 }
-
-
-

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\Sallesport\\SalleSport.csproj": {}
+    "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\SalleSport\\SalleSport.csproj": {}
   },
   "projects": {
-    "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\Sallesport\\SalleSport.csproj": {
+    "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\SalleSport\\SalleSport.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\Sallesport\\SalleSport.csproj",
+        "projectUniqueName": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\SalleSport\\SalleSport.csproj",
         "projectName": "SalleSport",
-        "projectPath": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\Sallesport\\SalleSport.csproj",
+        "projectPath": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\SalleSport\\SalleSport.csproj",
         "packagesPath": "C:\\Users\\enzod\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\Sallesport\\obj\\",
+        "outputPath": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\SalleSport\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
