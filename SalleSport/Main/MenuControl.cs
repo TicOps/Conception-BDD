@@ -1,11 +1,21 @@
 using System;
 using System.Threading;
 using Models;
+using MySql.Data.MySqlClient;
+
 
 namespace Main
 {
     public class MenuControl
     {
+
+        string connectionString =
+            "Server=localhost;" +
+            "Database=salle_sport;" +
+            "Uid=root;" +
+            "Pwd=root;";
+
+
         // ===== POINT D'ENTRÉE =====
         public void Start()
         {
@@ -94,16 +104,71 @@ namespace Main
                 ShowMemberMenu(user);
         }
 
-        private User CanLogIn(string username, string password)
+        private User CanLogIn(string email, string password)
         {
-            if (username == "admin" && password == "admin")
-                return new User { Username = username, Role = "ADMIN" };
+            MySqlConnection connection = new MySqlConnection(connectionString);
 
-            if (username == "member" && password == "1234")
-                return new User { Username = username, Role = "MEMBER" };
+            try
+            {
+                // 1️⃣ Ouvrir connexion
+                connection.Open();
 
-            return null;
+                // 2️⃣ Requête SQL (membre)
+                string sql = "SELECT idMembre, email FROM Membre WHERE email = @email AND mdp = @mdp";
+                MySqlCommand cmd = new MySqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@mdp", password);
+
+                // 3️⃣ Exécution
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                // 4️⃣ Lecture résultat
+                if (reader.Read())
+                {
+                    User user = new User();
+                    user.Id = reader.GetString(0);
+                    user.Username = reader.GetString(1);
+                    user.Role = "MEMBER";
+
+                    reader.Close();
+                    connection.Close();
+                    return user;
+                }
+
+                reader.Close();
+
+                // 5️⃣ Test admin (gérant)
+                sql = "SELECT idGerant, email FROM Gerant WHERE email = @email AND mdp = @mdp";
+                cmd = new MySqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@mdp", password);
+
+                reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    User user = new User();
+                    user.Id = reader.GetString(0);
+                    user.Username = reader.GetString(1);
+                    user.Role = "ADMIN";
+
+                    reader.Close();
+                    connection.Close();
+                    return user;
+                }
+
+                reader.Close();
+                connection.Close();
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Erreur SQL : " + e.Message);
+                connection.Close();
+                return null;
+            }
         }
+
 
         // ===== MENU ADMIN =====
         private void ShowAdminMenu(User user)
