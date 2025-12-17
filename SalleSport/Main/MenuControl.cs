@@ -50,8 +50,9 @@ namespace Main
                 DrawHeader("Menu Principal");
 
                 Console.WriteLine("[1] Connexion");
-                Console.WriteLine("[2] Mode Évaluation");
+                Console.WriteLine("[2] Inscription");
                 Console.WriteLine("[3] Quitter");
+
                 Console.WriteLine("--------------------------------------------");
                 Console.Write("Votre choix : ");
 
@@ -62,12 +63,15 @@ namespace Main
                     case "1":
                         Login();
                         break;
+
                     case "2":
-                        ShowEvaluationMenu();
+                        Register();
                         break;
+
                     case "3":
                         Goodbye();
                         return;
+
                     default:
                         Error("Choix invalide !");
                         break;
@@ -112,6 +116,9 @@ namespace Main
             {
                 // 1️⃣ Ouvrir connexion
                 connection.Open();
+                MySqlCommand testCmd = new MySqlCommand("SELECT DATABASE();", connection);
+                Console.WriteLine("BDD UTILISEE : " + testCmd.ExecuteScalar());
+
 
                 // 2️⃣ Requête SQL (membre)
                 string sql = "SELECT idMembre, email FROM Membre WHERE email = @email AND mdp = @mdp";
@@ -126,7 +133,7 @@ namespace Main
                 if (reader.Read())
                 {
                     User user = new User();
-                    user.Id = reader.GetString(0);
+                    user.Id = reader.GetInt32(0);
                     user.Username = reader.GetString(1);
                     user.Role = "MEMBER";
 
@@ -148,7 +155,7 @@ namespace Main
                 if (reader.Read())
                 {
                     User user = new User();
-                    user.Id = reader.GetString(0);
+                    user.Id = reader.GetInt32(0);
                     user.Username = reader.GetString(1);
                     user.Role = "ADMIN";
 
@@ -281,6 +288,87 @@ namespace Main
                 }
             }
         }
+// ----------------------------------------- Inscription -------------------------------------------------
+        private void Register()
+        {
+            DrawHeader("Inscription Membre");
+
+            Console.Write("Email : ");
+            string email = Console.ReadLine();
+
+            Console.Write("Mot de passe : ");
+            string mdp = Console.ReadLine();
+
+            Console.Write("Prénom : ");
+            string prenom = Console.ReadLine();
+
+            Console.Write("Nom : ");
+            string nom = Console.ReadLine();
+
+            Console.Write("Adresse : ");
+            string adresse = Console.ReadLine();
+
+            Console.Write("Téléphone (10 chiffres) : ");
+            string telephone = Console.ReadLine();
+
+            bool success = CreatePendingMember(
+                email, mdp, prenom, nom, adresse, telephone
+            );
+
+            if (success)
+                Success("Inscription enregistrée ! En attente de validation par un administrateur.");
+            else
+                Error("Erreur lors de l'inscription (email déjà utilisé ?)");
+        }
+
+        private bool CreatePendingMember(
+            string email,
+            string mdp,
+            string prenom,
+            string nom,
+            string adresse,
+            string telephone
+        )
+        {
+            using MySqlConnection connection = new MySqlConnection(connectionString);
+
+            try
+            {
+                connection.Open();
+
+                string sql = @"
+                    INSERT INTO Membre (
+                        email, prenom, nom, adresse, mdp, telephone,
+                        dateDebut, statutInscription, dateFin
+                    )
+                    VALUES (
+                        @email, @prenom, @nom, @adresse, @mdp, @telephone,
+                        CURDATE(), 'EN_ATTENTE', NULL
+                    );
+                ";
+
+                MySqlCommand cmd = new MySqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@prenom", prenom);
+                cmd.Parameters.AddWithValue("@nom", nom);
+                cmd.Parameters.AddWithValue("@adresse", adresse);
+                cmd.Parameters.AddWithValue("@mdp", mdp);
+                cmd.Parameters.AddWithValue("@telephone", telephone);
+
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERREUR SQL REELLE :");
+                Console.WriteLine(ex.Message);
+                Console.ReadKey();
+                return false;
+            }
+
+        }
+
+
 
         // ===== UTILITAIRES VISUELS =====
         private void Placeholder(string title)

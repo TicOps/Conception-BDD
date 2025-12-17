@@ -38,8 +38,6 @@ Gestion différente admin principal / secondaire
 
 🔹 Interface Membre
 
-Inscription (formulaire → en attente de validation)
-
 Réserver un cours
 
 Annuler une réservation
