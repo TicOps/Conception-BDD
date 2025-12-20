@@ -1,9 +1,10 @@
+
 using System;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using Models;
 
-
+namespace Main
 {
      private void MenuGestionMembres()
         {
