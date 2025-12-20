@@ -41,7 +41,10 @@ namespace Main
                                 : (DateTime?)lecteur.GetDateTime("dateDebut"),
                             StatutInscription = lecteur.IsDBNull(lecteur.GetOrdinal("statutInscription")) 
                                 ? "EN_ATTENTE" 
-                                : lecteur.GetString("statutInscription")
+                                : lecteur.GetString("statutInscription"),
+                            DateFin = lecteur.IsDBNull(lecteur.GetOrdinal("dateFin")) 
+                                ? null 
+                                : (DateTime?)lecteur.GetDateTime("dateFin")
                         };
                         liste.Add(m);
                     }
@@ -104,6 +107,8 @@ namespace Main
                 try
                 {
                     connection.Open();
+                    
+                    // Mise à jour du statut vers VALIDE
                     string requete = @"UPDATE Membre 
                                       SET statutInscription = 'VALIDE'
                                       WHERE idMembre = @id 
@@ -113,6 +118,20 @@ namespace Main
                     commande.Parameters.AddWithValue("@id", idMembre);
 
                     int resultat = commande.ExecuteNonQuery();
+                    
+                    if (resultat > 0)
+                    {
+                        // Ajouter l'entrée dans la table Valide (relation avec le gérant)
+                        // On utilise idGerant = 1 par défaut (premier admin)
+                        string requeteValide = @"INSERT INTO Valide (idMembre, idGerant) 
+                                                VALUES (@idMembre, 1)
+                                                ON DUPLICATE KEY UPDATE idGerant = 1";
+                        
+                        MySqlCommand cmdValide = new MySqlCommand(requeteValide, connection);
+                        cmdValide.Parameters.AddWithValue("@idMembre", idMembre);
+                        cmdValide.ExecuteNonQuery();
+                    }
+                    
                     return resultat > 0;
                 }
                 catch (Exception ex)
@@ -162,16 +181,19 @@ namespace Main
                 {
                     connection.Open();
 
+                    // Supprimer les réservations
                     string requete1 = "DELETE FROM Reserve WHERE idMembre = @id";
                     MySqlCommand cmd1 = new MySqlCommand(requete1, connection);
                     cmd1.Parameters.AddWithValue("@id", idMembre);
                     cmd1.ExecuteNonQuery();
 
+                    // Supprimer les validations
                     string requete2 = "DELETE FROM Valide WHERE idMembre = @id";
                     MySqlCommand cmd2 = new MySqlCommand(requete2, connection);
                     cmd2.Parameters.AddWithValue("@id", idMembre);
                     cmd2.ExecuteNonQuery();
 
+                    // Supprimer le membre
                     string requete3 = "DELETE FROM Membre WHERE idMembre = @id";
                     MySqlCommand cmd3 = new MySqlCommand(requete3, connection);
                     cmd3.Parameters.AddWithValue("@id", idMembre);

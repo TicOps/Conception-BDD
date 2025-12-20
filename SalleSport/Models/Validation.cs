@@ -1,7 +1,7 @@
 namespace Models
 {
 
-    public class Valide
+    public class Validation
     {
         public int IdMembre { get; set; }
         public int IdGerant { get; set; }

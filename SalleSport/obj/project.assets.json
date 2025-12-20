@@ -594,24 +594,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\enzod\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Hugo Huang\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\SalleSport\\SalleSport.csproj",
+      "projectUniqueName": "C:\\Users\\Hugo Huang\\OneDrive - DVHE\\Bureau\\ESILV\\A2\\INFORMATIQUE\\CBD\\PROJET BDD\\Conception-BDD\\SalleSport\\SalleSport.csproj",
       "projectName": "SalleSport",
-      "projectPath": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\SalleSport\\SalleSport.csproj",
-      "packagesPath": "C:\\Users\\enzod\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\enzod\\OneDrive\\Bureau\\Dev\\Conception BDD\\Projet\\Conception-BDD\\SalleSport\\obj\\",
+      "projectPath": "C:\\Users\\Hugo Huang\\OneDrive - DVHE\\Bureau\\ESILV\\A2\\INFORMATIQUE\\CBD\\PROJET BDD\\Conception-BDD\\SalleSport\\SalleSport.csproj",
+      "packagesPath": "C:\\Users\\Hugo Huang\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Hugo Huang\\OneDrive - DVHE\\Bureau\\ESILV\\A2\\INFORMATIQUE\\CBD\\PROJET BDD\\Conception-BDD\\SalleSport\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\enzod\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Hugo Huang\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -637,7 +632,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net9.0": {
@@ -659,12 +654,30 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[9.0.11, 9.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[9.0.11, 9.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[9.0.11, 9.0.11]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[9.0.11, 9.0.11]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

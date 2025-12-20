@@ -22,10 +22,7 @@ namespace Main
                 try
                 {
                     connection.Open();
-                    string requete = @"SELECT c.*, co.nom, co.prenom
-                                      FROM Cours c
-                                      INNER JOIN Coach co ON c.idCoach = co.idCoach
-                                      ORDER BY c.nomCours";
+                    string requete = @"SELECT * FROM Cours ORDER BY nomCours";
 
                     MySqlCommand cmd = new MySqlCommand(requete, connection);
                     MySqlDataReader lecteur = cmd.ExecuteReader();
@@ -43,7 +40,6 @@ namespace Main
                             Horaire = lecteur.IsDBNull(lecteur.GetOrdinal("horaire")) ? "" : lecteur.GetString("horaire"),
                             CapaciteMaxCours = lecteur.GetInt32("capaciteMaxCours"),
                             IdCoach = lecteur.GetInt32("idCoach"),
-                            NomCoach = lecteur.GetString("prenom") + " " + lecteur.GetString("nom"),
                             IdSalle = lecteur.GetInt32("idSalle")
                         };
                         liste.Add(cours);
@@ -101,13 +97,22 @@ namespace Main
                 {
                     connection.Open();
                     string requete = @"UPDATE Cours 
-                                      SET nomCours = @nom, description = @desc, horaire = @horaire
+                                      SET nomCours = @nom, description = @desc, horaire = @horaire,
+                                          duree = @duree, intensite = @intensite, 
+                                          niveauDifficulte = @niveau, capaciteMaxCours = @capacite,
+                                          idSalle = @salle, idCoach = @coach
                                       WHERE idCours = @id";
 
                     MySqlCommand cmd = new MySqlCommand(requete, connection);
                     cmd.Parameters.AddWithValue("@nom", cours.NomCours);
                     cmd.Parameters.AddWithValue("@desc", cours.Description);
                     cmd.Parameters.AddWithValue("@horaire", cours.Horaire);
+                    cmd.Parameters.AddWithValue("@duree", cours.Duree);
+                    cmd.Parameters.AddWithValue("@intensite", cours.Intensite);
+                    cmd.Parameters.AddWithValue("@niveau", cours.NiveauDifficulte);
+                    cmd.Parameters.AddWithValue("@capacite", cours.CapaciteMaxCours);
+                    cmd.Parameters.AddWithValue("@salle", cours.IdSalle);
+                    cmd.Parameters.AddWithValue("@coach", cours.IdCoach);
                     cmd.Parameters.AddWithValue("@id", cours.IdCours);
 
                     int resultat = cmd.ExecuteNonQuery();
@@ -129,11 +134,13 @@ namespace Main
                 {
                     connection.Open();
 
+                    // Supprimer d'abord les réservations liées
                     string requete1 = "DELETE FROM Reserve WHERE idCours = @id";
                     MySqlCommand cmd1 = new MySqlCommand(requete1, connection);
                     cmd1.Parameters.AddWithValue("@id", idCours);
                     cmd1.ExecuteNonQuery();
 
+                    // Supprimer le cours
                     string requete2 = "DELETE FROM Cours WHERE idCours = @id";
                     MySqlCommand cmd2 = new MySqlCommand(requete2, connection);
                     cmd2.Parameters.AddWithValue("@id", idCours);

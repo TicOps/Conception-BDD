@@ -36,7 +36,9 @@ namespace Main
                             Prenom = lecteur.IsDBNull(lecteur.GetOrdinal("prenom")) ? "" : lecteur.GetString("prenom"),
                             Specialite = lecteur.IsDBNull(lecteur.GetOrdinal("specialite")) ? "" : lecteur.GetString("specialite"),
                             Formations = lecteur.IsDBNull(lecteur.GetOrdinal("formations")) ? "" : lecteur.GetString("formations"),
-                            Telephone = lecteur.IsDBNull(lecteur.GetOrdinal("telephone")) ? "" : lecteur.GetString("telephone")
+                            Telephone = lecteur.IsDBNull(lecteur.GetOrdinal("telephone")) ? "" : lecteur.GetString("telephone"),
+                            EstActif = lecteur.IsDBNull(lecteur.GetOrdinal("estActif")) ? true : lecteur.GetBoolean("estActif"),
+                            IdGerant = lecteur.GetInt32("idGerant")
                         };
                         liste.Add(coach);
                     }
@@ -58,9 +60,9 @@ namespace Main
                 {
                     connection.Open();
                     string requete = @"INSERT INTO Coach 
-                                      (email, nom, prenom, specialite, formations, telephone, idGerant) 
+                                      (email, nom, prenom, specialite, formations, telephone, idGerant, estActif) 
                                       VALUES 
-                                      (@email, @nom, @prenom, @specialite, @formations, @tel, 1)";
+                                      (@email, @nom, @prenom, @specialite, @formations, @tel, 1, 1)";
 
                     MySqlCommand cmd = new MySqlCommand(requete, connection);
                     cmd.Parameters.AddWithValue("@email", nouveauCoach.Email);
@@ -121,6 +123,21 @@ namespace Main
                 try
                 {
                     connection.Open();
+                    
+                    // Vérifier si le coach a des cours assignés
+                    string checkRequete = "SELECT COUNT(*) FROM Cours WHERE idCoach = @id";
+                    MySqlCommand checkCmd = new MySqlCommand(checkRequete, connection);
+                    checkCmd.Parameters.AddWithValue("@id", idCoach);
+                    
+                    int nbCours = Convert.ToInt32(checkCmd.ExecuteScalar());
+                    
+                    if (nbCours > 0)
+                    {
+                        Console.WriteLine($"Impossible de supprimer : le coach a {nbCours} cours assigné(s).");
+                        return false;
+                    }
+                    
+                    // Supprimer le coach
                     string requete = "DELETE FROM Coach WHERE idCoach = @id";
                     MySqlCommand cmd = new MySqlCommand(requete, connection);
                     cmd.Parameters.AddWithValue("@id", idCoach);
@@ -131,6 +148,56 @@ namespace Main
                 catch (Exception ex)
                 {
                     Console.WriteLine("Erreur suppression coach : " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        public bool DesactiverCoach(int idCoach)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string requete = @"UPDATE Coach 
+                                      SET estActif = 0
+                                      WHERE idCoach = @id";
+
+                    MySqlCommand cmd = new MySqlCommand(requete, connection);
+                    cmd.Parameters.AddWithValue("@id", idCoach);
+
+                    int resultat = cmd.ExecuteNonQuery();
+                    return resultat > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erreur désactivation coach : " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        public bool ReactiverCoach(int idCoach)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string requete = @"UPDATE Coach 
+                                      SET estActif = 1
+                                      WHERE idCoach = @id";
+
+                    MySqlCommand cmd = new MySqlCommand(requete, connection);
+                    cmd.Parameters.AddWithValue("@id", idCoach);
+
+                    int resultat = cmd.ExecuteNonQuery();
+                    return resultat > 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erreur réactivation coach : " + ex.Message);
                     return false;
                 }
             }
