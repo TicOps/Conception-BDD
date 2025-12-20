@@ -86,6 +86,7 @@ CREATE TABLE Coach (
    formations VARCHAR(50),
    telephone CHAR(10),
    idGerant INT NOT NULL,
+   estActif BOOL,
    PRIMARY KEY (idCoach),
    UNIQUE (email),
    FOREIGN KEY (idGerant) REFERENCES Gerant(idGerant)

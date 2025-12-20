@@ -15,7 +15,6 @@ namespace Main
             "Uid=root;" +
             "Pwd=root;";
 
-
         // ===== POINT D'ENTRÉE =====
         public void Start()
         {
@@ -214,6 +213,28 @@ namespace Main
                         Error("Choix invalide !");
                         break;
                 }
+                /*
+                switch (choix)
+                {
+                    case "1":
+                        MenuGestionMembres();
+                        break;
+                    case "2":
+                        MenuGestionCoachs();
+                        break;
+                    case "3":
+                        MenuGestionCours();
+                        break;
+                    case "4":
+                        AfficherStatistiques();
+                        break;
+                    case "5":
+                        return;
+                    default:
+                        Error("Choix invalide !");
+                        break;
+                }
+                */
             }
         }
 
@@ -255,6 +276,27 @@ namespace Main
                         break;
                 }
             }
+            /*switch (choix)
+        {
+            case "1":
+                ReserverCoursMembre(user.Id);
+                break;
+            case "2":
+                AnnulerReservationMembre(user.Id);
+                break;
+            case "3":
+                AfficherMesReservations(user.Id);
+                break;
+            case "4":
+                ModifierMesInformations(user.Id);
+                break;
+            case "5":
+                return;
+            default:
+                Error("Choix invalide !");
+                break;
+        }*/
+
         }
 
         // ===== MODE EVALUATION =====
