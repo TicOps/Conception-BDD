@@ -7,16 +7,15 @@ namespace Models
 {
     // ========== MODÈLES DE DONNÉES ==========
     
-    public class Administrateur
-    {
-        public string IdGerant { get; set; }
-        public string Username { get; set; }
-        public string MotDePasse { get; set; }
-        public string NiveauPrivilege { get; set; } // "Principal" ou "Secondaire"
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
-        public string Email { get; set; }
-        public DateTime DateCreation { get; set; }
-        public bool EstActif { get; set; }
-    }
+    public class Gerant
+{
+    public int IdGerant { get; set; }
+    public string Nom { get; set; }
+    public string Prenom { get; set; }
+    public string Adresse { get; set; }
+    public string Telephone { get; set; }
+    public string Mdp { get; set; }
+    public string Email { get; set; }
+}
+
 }

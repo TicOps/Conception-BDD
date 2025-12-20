@@ -1,10 +1,12 @@
 namespace Models
 {
-    public class Reservation
-    {
-        public int Id { get; set; }
-        public int MemberId { get; set; }         // FK vers Member
-        public int CourseId { get; set; }         // FK vers Course
-        public DateTime DateReservation { get; set; }
-    }
+    ppublic class Reserve
+{
+    public int IdMembre { get; set; }
+    public int IdCours { get; set; }
+    public string StatutReservation { get; set; }
+    public DateTime DateHeureDebut { get; set; }
+    public DateTime DateHeureFin { get; set; }
+}
+
 }

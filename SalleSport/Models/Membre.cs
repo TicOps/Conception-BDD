@@ -1,14 +1,16 @@
 namespace Models
 {
-    public class Member
+    public class Membre
     {
-        public int Id { get; set; }
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
-        public string Adresse { get; set; }
-        public string Telephone { get; set; }
+        public int IdMembre { get; set; }
         public string Email { get; set; }
-        public DateTime DateInscription { get; set; }
-        public bool IsValide { get; set; }   // True si validée par un admin
+        public string Prenom { get; set; }
+        public string Nom { get; set; }
+        public string Adresse { get; set; }
+        public string Mdp { get; set; }
+        public string Telephone { get; set; }
+        public DateTime? DateDebut { get; set; }
+        public string StatutInscription { get; set; }
+        public DateTime? DateFin { get; set; }
     }
 }
