@@ -1,0 +1,7 @@
+.vs/
+.vscode/
+.idea/
+
+# Build results
+bin/
+obj/
