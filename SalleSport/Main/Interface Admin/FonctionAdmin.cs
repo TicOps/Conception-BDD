@@ -6,6 +6,8 @@ using Models;
 
 namespace Main
 {
+    public class FonctionAdmin
+    {
      private void MenuGestionMembres()
         {
             while (true)
@@ -509,4 +511,6 @@ namespace Main
             Console.WriteLine("\n\nAppuyez sur une touche pour continuer...");
             Console.ReadKey();
         }
+      
+    }
 }
